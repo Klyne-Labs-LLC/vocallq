@@ -19,7 +19,7 @@ export const sendBulkEmail = async (webinarId: string) => {
 
     const res = await resend.batch.send(
       attendances.map((attendance) => ({
-        from: "Spotlight <kuldeep@kuldeepsaini.dev>",
+        from: "VocallQ <anian@vocallq.app>",
         to: [attendance.user.email],
         subject: "Webinar Has Started",
         react: EmailTemplate({ webinarId }),
