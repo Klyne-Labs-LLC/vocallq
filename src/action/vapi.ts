@@ -27,7 +27,6 @@ export const createAssistant = async (name: string, userId: string) => {
 
     const aiAgent = await prismaClient.aiAgents.create({
       data: {
-        id: createAssistant.id,
         model: "gpt-4o",
         provider: "openai",
         prompt: aiAgentPrompt,
