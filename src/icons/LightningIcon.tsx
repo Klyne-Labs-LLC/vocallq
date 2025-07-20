@@ -1,13 +1,20 @@
 import React from "react";
 
-const LightningIcon = () => {
+interface LightningIconProps {
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+}
+
+const LightningIcon = ({ className = "", width = "16", height = "16" }: LightningIconProps) => {
   return (
     <svg
-      width="16"
-      height="16"
+      width={width}
+      height={height}
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <g clipPath="url(#clip0_7760_234)">
         <path
