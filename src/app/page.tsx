@@ -90,18 +90,6 @@ const title1 = 'Welcome To'
 const title2 = 'Spotlight Premium'
 
 export default function HeroGeometric() {
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-        delay: 0.5 + i * 0.2,
-        ease: "easeOut",
-      },
-    }),
-  }
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]">
@@ -157,12 +145,9 @@ export default function HeroGeometric() {
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
-            custom={0}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
           >
             <Image
@@ -175,10 +160,9 @@ export default function HeroGeometric() {
           </motion.div>
 
           <motion.div
-            custom={1}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
           >
             <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
@@ -197,10 +181,9 @@ export default function HeroGeometric() {
           </motion.div>
 
           <motion.div
-            custom={2}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
           >
             <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
               Crafting exceptional digital experiences through innovative design
@@ -212,10 +195,9 @@ export default function HeroGeometric() {
           </motion.div>
 
           <motion.div
-            custom={3}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.1, ease: "easeOut" }}
             style={{
               marginTop: '20px',
             }}
