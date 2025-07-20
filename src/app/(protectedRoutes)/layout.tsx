@@ -27,8 +27,8 @@ const Layout = async ({ children }: Props) => {
       <Sidebar />
 
       {/* Main content area with left margin for sidebar */}
-      <div style={{ marginLeft: '6rem' }} className="sm:ml-32 min-h-screen flex flex-col">
-        <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
+      <div style={{ marginLeft: '6rem' }} className="sm:ml-32 min-h-screen">
+        <div className="flex flex-col w-full min-h-screen px-4 scrollbar-hide container mx-auto">
           {/* Fixed header */}
           <Header
             assistants={user?.aiAgents || []}
