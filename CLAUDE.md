@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI Webinar SaaS platform with real-time streaming, automated sales agents, and payment integration. Built with Next.js 15, React 19, Clerk authentication, Prisma ORM with PostgreSQL, Stream.io for video/chat, Vapi AI for voice agents, and Stripe for payments.
+**VocallQ** - AI Webinar SaaS platform with real-time streaming, automated sales agents, and payment integration. Built with Next.js 15, React 19, Clerk authentication, Prisma ORM with PostgreSQL, Stream.io for video/chat, Vapi AI for voice agents, and Stripe for payments.
 
 ## Development Commands
 
@@ -164,3 +164,8 @@ Follow existing Tailwind patterns. Use Radix UI components from `/src/components
 - Sidebar navigation configuration in `/src/lib/data.ts` (`sidebarData`)
 - Onboarding steps configuration in `/src/lib/data.ts` (`onBoardingSteps`)
 - Pipeline tags for lead qualification in `/src/lib/data.ts` (`pipelineTags`)
+
+### Branding & Naming
+- Project name is **VocallQ** (package.json: "vocallq.app")
+- Brand references should use "VocallQ" in UI components and subscription modals
+- Landing page and marketing materials should reflect VocallQ branding

@@ -1,172 +1,348 @@
-# 📡 AI Webinar SaaS – Installation Manual & Feature Guide
+# VocallQ
 
-Quick tip: Paste this file on this website [https://markdownlivepreview.com/](https://markdownlivepreview.com/) to view in preview mode!
-
-Project Description:
-Welcome to the **AI Webinar SaaS** platform – an advanced, AI-enhanced webinar hosting solution with real-time streaming, automated sales agents, and payment integration.
-
-# Where to access each bonus offered in the Spotlight bundle
-
-Some bonuses were only if you purchased this codebase during the launch period. If you don't find some bonuses, its because the offer has ended. Please download all bonuses right away and activate them if needed so you don't lose them when they are turned off.
-
-- Sending emails to attendees when the webinar begins (In readme)
-- Installation manual (in readme)
-- Future proof feature ideas to expand upon (In readme)
-- Record webinars and render them on the stream ended page (already in the codebase)
-- Payments on the AI agent call page (Already added inside the codebase inside the live stream page)
-- Custom onboarding steps showing customers progress on the home page (Already added inside home page)
-- Improve UI and themes for the livestream page and chat menu (Few upgrades already added)
-- Free License (Send us an email to support@webprodigies.com with your domain name to activate the license)
-- Figma File (Should be included inside the email you received with the codebase)
+<div align="center">
+  <h3>AI-Powered Webinar SaaS Platform</h3>
+  <p>Real-time streaming, automated sales agents, and payment integration</p>
+  
+  [![Next.js](https://img.shields.io/badge/Next.js-15.2.4-black)](https://nextjs.org/)
+  [![React](https://img.shields.io/badge/React-19.0.0-blue)](https://reactjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+  [![Prisma](https://img.shields.io/badge/Prisma-6.5.0-2D3748)](https://www.prisma.io/)
+</div>
 
 ---
 
-> 🎁 This project includes a **Free Commercial License**. Please send an email to support@webprodigies.com with the domain name you wish to attach to your project. This will be used as an activation key for your project. You can read our license terms on our website webprodigies/license to learn more on how you can use the license.
+## 🚀 Overview
 
-Note: Some links in this file may have special offers, discounts or limited time bonuses. Not using the links simply means you're saying no to the special offers but does not mean things wont work. Few links are kick back links for us to grab some coffee while we code these awesome projects for you! Thank you in advance for supporting us and hope you love the discounts!
+VocallQ is a comprehensive AI webinar SaaS platform that combines live streaming, automated sales agents, and seamless payment processing. Built with cutting-edge technologies to deliver exceptional webinar experiences with intelligent lead qualification and conversion optimization.
+
+### ✨ Key Features
+
+- **🎥 Live Webinar Streaming** - Real-time video streaming with interactive chat
+- **🤖 AI Sales Agents** - Automated lead qualification using Vapi AI
+- **💳 Payment Integration** - Stripe Connect for multi-tenant payments
+- **📊 Lead Management** - Comprehensive pipeline tracking and analytics
+- **🔐 Secure Authentication** - Clerk-powered user management
+- **📧 Email Automation** - Automated notifications via Resend
+- **📱 Responsive Design** - Mobile-first UI with Tailwind CSS
 
 ---
 
-# 🛠 Installation Manual
+## 🛠 Tech Stack
 
-> 📺 I've attached Loom video to a few so you can follow along visually, without having to watch the entire 10hr + youtube video. [Quick message](https://www.loom.com/share/4cf6bf335f024e09b834b1314ee43491?sid=54ae83fe-a870-4fe9-91b2-5bc95a54273c)
+### Core Framework
+- **Next.js 15** with App Router and Turbopack
+- **React 19** with server components
+- **TypeScript** for type safety
 
-### 1️⃣ Install Dependencies
+### Database & ORM
+- **PostgreSQL** database
+- **Prisma ORM** for data modeling
 
-Only use npm. bun or other cli tools could resolve folders and your node_modules differently which will cause conflicts between your code and ours.
+### Authentication & Payments
+- **Clerk** for user authentication
+- **Stripe Connect** for payment processing
+
+### AI & Communication
+- **Vapi AI** for voice agents
+- **Stream.io** for video/chat
+- **Resend** for email delivery
+
+### UI & Styling
+- **Tailwind CSS** for styling
+- **Radix UI** for accessible components
+- **Framer Motion** for animations
+- **Zustand** for state management
+
+---
+
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- npm (required - do not use bun or yarn)
+- PostgreSQL database
+- Required API keys (see Environment Variables)
+
+---
+
+## ⚡ Quick Start
+
+### 1. Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/Klyne-Labs-LLC/vocallq.git
+cd vocallq
+
+# Install dependencies (MUST use npm with legacy flag)
 npm i --legacy-peer-deps
-```
 
----
-
-### 2️⃣ Generate Prisma Client
-
-```bash
+# Generate Prisma client
 npx prisma generate
 ```
 
-📺 Loom: [Watch Prisma setup](https://www.loom.com/share/fed28aab2e054c4397fe64d63442bdb9?sid=eae94d2a-644f-406c-9216-5f85e5b32afe). 
+### 2. Environment Setup
 
-This video also shows you how to install prisma but you don't need to do that because you already installed it with npm i.
+Create a `.env.local` file with the following variables (see `.env.example` for reference):
 
----
+```env
+# Environment
+ENVIRONMENT=development
 
-### Update all ENV variables before starting anything.
+# Neon db
+DATABASE_URL="postgresql://username:password@localhost:5432/vocallq"
 
-follow this guide step by step to get your project started.
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+CLERK_SECRET_KEY="sk_test_..."
+NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/callback
+NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/callback
 
-### 3️⃣ Add Database URL
+# App Configuration
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
-📺 Loom: [Watch DB config](https://www.loom.com/share/38e87220449649c4a3a383b99309b28f?sid=b1d631c8-a1bd-4d84-b0c9-97096393336f)
+# Stripe API
+STRIPE_SECRET_KEY="sk_test_..."
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
+NEXT_PUBLIC_STRIPE_CLIENT_ID="ca_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
 
-[Link to get 10 free projects with Neon DB](https://fyi.neon.tech/J5YG0hX)
+# Vapi AI
+VAPI_PRIVATE_KEY="..."
+VAPI_ORG_ID="..."
+NEXT_PUBLIC_VAPI_API_KEY="..."
 
----
+# GetStream io
+NEXT_PUBLIC_STREAM_API_KEY="..."
+STREAM_SECRET="..."
 
-### 4️⃣ Add Clerk API Keys
+# Resend Email
+RESEND_API_KEY="re_..."
+```
 
-📺 Loom: [Watch Clerk setup](https://www.loom.com/share/5d53b1f7d4a04d3c97a20045b0bd86b8?sid=454b28eb-0a8e-4e8b-8cb5-bcc04d2aeb67)
+### 3. Database Setup
 
-[Clerk free plan](https://go.clerk.com/CqBMVjW)
+```bash
+# Push schema to database
+npx prisma db push
 
----
+# Open Prisma Studio (optional)
+npx prisma studio
+```
 
-### 5️⃣ Add Stripe API Keys
+### 4. Development
 
-📺 Loom: [Watch Stripe setup](https://www.loom.com/share/ee65d563a10d4953971e59dc029404db?sid=654efc02-daa3-464e-9f18-a51f58745ae0)
+```bash
+# Start development server
+npm run dev
+```
 
-[Stripe API keys](https://dashboard.stripe.com/apikeys)
-
----
-
-### 6️⃣ Add Vapi API Key
-
-📺 Loom: [Watch Vapi setup](https://www.loom.com/share/f233c0482a2e4aa1ba041f4c7caa20d9?sid=f8e122ba-0fdf-40d6-a440-0f3c382614e5)
-
-[Get a free account with 1000 free minutes per month + our sales prompt + use code WEBPRODIGIES @ checkout to get additional 500 free minutes](https://vapi.ai/?aff=emmanuel)
-
----
-
-### 7️⃣ Add GetStream.io Keys
-
-📺 Loom: [Watch GetStream.io setup](https://www.loom.com/share/66eb6d5436954cb286edbe2ee9dabf3c?sid=89cae3a5-8294-4992-81e1-cbac3b938533)
-
-[Get stream IO Maker account](https://getstream.io/maker-account/)
-
----
-
-### 8️⃣ Add Resend API Key
-
-📺 Loom: [Watch Resend setup](https://www.loom.com/share/c64c83e76f794c69b5043829954da2fc?sid=97a43856-faa4-4411-b9b9-2a284636d776)
-[Resend](https://resend.com/?utm_source=webprodigies)
-
----
-
-### 9️⃣ Deploy on hostinger and coolify
-
-📺 Loom: [Watch Histinger setup](https://www.loom.com/share/60b7ce65c53847a7a5563b3bea75f4c6?sid=12cda5ec-c576-4f8b-8609-2c7a0864c321)
-[Watch hostinger setup with coolify](https://www.loom.com/share/5d27ec1a40fb435da451f4dd0c0967be?sid=51744fb4-a322-4fde-8884-46c7e2370054)
-
-[Get 61% off with my link, and use code WEBPRODIGIES at checkout to get an additional 10% off on the KVM2 VPS plans](https://hostinger.com/webprodigies)
+Visit `http://localhost:3000` to see your application.
 
 ---
 
+## 🏗 Project Structure
 
-## ✨ Bonus Features
-
-### 🔮 Future-Proof Feature Ideas
-
-### Live add to cart count that creates urgency.
-
-- The key to having people take action is to give them a reason. By showing them how many spots are available, or how many are currently vieweing the product on stripe, they are more likely going to want to take action and move closer to their goals. It creates a sense of urgency! This metric can also be used to show data to the marketers on their dashboard.
-
-## Smart follow-ups for attendees who didn’t convert.
-
-- After the attendees has hoped on a sales call with the AI agent, you need to follow up with customers if they don't convert. Use resend to send emails / follow up sequences to customers. This is huge for marketers! You can also take on the email costs (skool does this too).
-
-## Niche specific template agents
-
-- Vapi has many template agents but they arent taylored to perform the way you like. Create a few templates that are niche specific that can help marketers start today! for example, instead of Sales agent, call it Sales agents for fitness coaches selling programs between $2k - $15k. This makes your product feel more unique and you'll stand out.
-
-## Real time sound notifications when attendees pay
-
-- Using dopamine to create stickiness is awesome! When you trigger visual or auditory feedback for customersr (it has to sound nice, not alarming), it gets them to want more. Skool does this, and they do it really well! When a customer comes through it makes a cash register noise that gets people excited. It's also a fun way to market your SAAS.
-
-## Webinar explore page (Not tested)
-
-- You can create an explore page for attendees to search and find what they're looking for. If you have good enough SEO and traffic, other marketers will see good traffic and signups.
-
-## Gamify the process
-
-- Create rewards, leaderboard, or the highest revenue generating webinar and offer monetary incentives, or free educational / inperson experiences to keep people motivated to stay longer.
-
-## Affiliate system
-
-- The best way to get customers to stick is through an affiliate system. If somone makes money by exchanging money, they will never churn. This is the closest they will ever get to passive income.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Authentication routes
+│   ├── (protectedRoutes)/ # Dashboard & protected pages
+│   ├── (publicRoutes)/    # Public webinar viewing
+│   └── api/               # API routes
+├── action/                # Server actions
+│   ├── webinar.ts         # Webinar operations
+│   ├── auth.ts            # Authentication
+│   ├── stripe.ts          # Payment processing
+│   ├── vapi.ts            # AI agent management
+│   └── ...
+├── components/            # React components
+│   ├── ui/               # Shadcn/ui components
+│   └── ReusableComponent/ # Custom components
+├── lib/                   # Utilities & configurations
+│   ├── prismaClient.ts   # Database client
+│   ├── stripe/           # Stripe utilities
+│   ├── vapi/             # Vapi AI client
+│   └── stream/           # Stream.io client
+└── store/                # Zustand state stores
+```
 
 ---
 
-## 🙌 Final Notes
+## 🔧 Available Scripts
 
-If you're launching this as a SaaS, you're going to need more than just code. You’ll need a powerful CRM that can host your websites, manage leads, build unlimited automations, and scale with you. Some of you might also need mentorship, design help, copywriting, or just someone to guide you through the chaos.
+```bash
+# Development
+npm run dev          # Start development server with Turbopack
+npm run build        # Build for production (includes Prisma generate)
+npm run start        # Start production server
+npm run lint         # Run ESLint
 
-- Inside Prodigies University, our clients get access to:
-- A free CRM platform (value $3,564/y) built to run your SaaS (unlimited features included)
-- Live coaching calls and on-demand mentorship
-- All our codebases, Figma files, and courses
-- Step-by-step strategies for lead generation, sales, systems, and growth
-- Our client aquisition system and offer creation blueprint to help you convert more
-- A private network of trusted talent so you never have to rely on Upwork again
-- And most importantly, a community of real SaaS builders who are in it with you
-- There’s more — but I’d rather walk you through it personally.
-
-👉 If this sounds like something you need, see if you qualify to work with us. [webprodigies.com/pu](https://webprodigies.com/pu?utm_source=readmefilepremiumCodebase)
-(Yes, this is paid — but so is everything that’s actually worth it.)
-
-**You can also DM us on instagram with the word "mentor" and our team members will hop in to see if we can give any free advise.**
+# Database
+npx prisma generate  # Generate Prisma client
+npx prisma db push   # Push schema changes to database
+npx prisma studio    # Open Prisma Studio
+```
 
 ---
 
-Made with ❤️ by [Web Prodigies](https://www.youtube.com/@webprodigies)
+## 🔐 Authentication Flow
+
+VocallQ uses Clerk for authentication with middleware protection:
+
+**Protected Routes:**
+- `/home` - Dashboard
+- `/webinars` - Webinar management
+- `/ai-agents` - AI agent configuration
+- `/lead` - Lead management
+- `/settings` - User settings
+
+**Public Routes:**
+- `/` - Landing page
+- `/live-webinar/*` - Public webinar viewing
+- `/sign-in`, `/sign-up` - Authentication
+
+---
+
+## 💰 Payment Integration
+
+### Stripe Connect Setup
+1. Create Stripe Connect accounts for presenters
+2. Configure webhooks for payment processing
+3. Handle multi-tenant payment flows
+
+### Supported Payment Flows
+- **Direct Purchases** - Buy now CTAs during webinars
+- **Call Bookings** - Schedule sales calls with AI agents
+- **Subscription Management** - Recurring billing for platform access
+
+---
+
+## 🤖 AI Agent Configuration
+
+VocallQ integrates with Vapi AI for automated sales conversations:
+
+### Features
+- **Lead Qualification** - Intelligent prospect screening
+- **Custom Prompts** - Tailored conversation flows
+- **Call Analytics** - Performance tracking and insights
+- **CRM Integration** - Seamless lead handoff
+
+### Configuration
+AI agents are configured in `/src/action/vapi.ts` with default templates in `/src/lib/data.ts`.
+
+---
+
+## 📊 Database Schema
+
+### Core Models
+
+**User**
+- Clerk integration with Stripe Connect
+- Subscription and billing management
+
+**Webinar**
+- Status tracking (SCHEDULED, LIVE, ENDED, etc.)
+- CTA configuration and analytics
+
+**Attendee**
+- Participant management and tracking
+- Call status and engagement metrics
+
+**AiAgents**
+- Vapi AI configuration and prompts
+- Performance analytics
+
+---
+
+## 🚀 Deployment
+
+### Environment Variables
+Ensure all production environment variables are set before deployment.
+
+### Build Process
+```bash
+npm run build
+```
+
+The build process automatically:
+1. Generates Prisma client
+2. Builds Next.js application
+3. Optimizes for production
+
+### Recommended Platforms
+- **Vercel** - Optimal for Next.js applications
+- **Railway** - Full-stack deployment with database
+- **Hostinger + Coolify** - Self-hosted option
+
+---
+
+## 🔧 Development Guidelines
+
+### Package Management
+- **CRITICAL**: Always use `npm i --legacy-peer-deps`
+- Never use bun, yarn, or other package managers
+
+### Code Patterns
+- Server actions for all database operations
+- Zustand for complex state management
+- Type validation with `/src/lib/type.ts`
+- Error handling with proper status codes
+
+### Styling
+- Follow existing Tailwind patterns
+- Use Radix UI components from `/src/components/ui/`
+- Maintain responsive design principles
+
+---
+
+## 📈 Monitoring & Analytics
+
+### Built-in Analytics
+- Webinar attendance tracking
+- Lead conversion metrics
+- AI agent performance
+- Payment analytics
+
+### Integration Points
+- Stream.io analytics for video metrics
+- Stripe dashboard for payment insights
+- Custom dashboards for business metrics
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run linting and tests
+5. Submit a pull request
+
+### Development Setup
+```bash
+npm i --legacy-peer-deps
+npx prisma generate
+npm run dev
+```
+
+---
+
+## 📞 Support
+
+For technical support or questions:
+- Review the [CLAUDE.md](./CLAUDE.md) file for development guidance
+- Check the issues section for known problems
+- Contact the development team
+
+---
+
+## 📄 License
+
+This project includes a commercial license. Contact anian@klynelabs.com for licensing details.
+
+---
+
+<div align="center">
+  <p>Built with ❤️ by the Klyne Labs, LLC</p>
+</div>
