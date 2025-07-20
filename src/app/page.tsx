@@ -28,6 +28,46 @@ import { sidebarData } from '@/lib/data';
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 
+const LandingPageSidebar = ({ onAuthRequired }: { onAuthRequired: () => void }) => {
+  const pathname = usePathname();
+
+  return (
+    <div className="w-18 sm:w-24 h-screen sticky top-0 py-10 px-2 sm:px-6 border rounded-lg bg-background border-border flex flex-col items-center justify-start gap-10">
+      <div className="">
+        <Spotlight />
+      </div>
+      {/* Sidebar Menu */}
+      <div className="w-full h-full justify-between items-center flex flex-col">
+        <div className="w-full h-fit flex flex-col gap-4 items-center justify-center">
+          {sidebarData.map((item) => (
+            <TooltipProvider key={item.id}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div
+                    onClick={onAuthRequired}
+                    className={`flex items-center gap-2 cursor-pointer rounded-lg p-2 hover:bg-secondary/50 transition-colors
+                    ${pathname === '/' && item.title === 'Home' ? 'iconBackground' : ''}`}
+                  >
+                    <item.icon
+                      className={`w-4 h-4 ${pathname === '/' && item.title === 'Home' ? '' : 'opacity-80'}`}
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <span className="text-sm">{item.title}</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))}
+        </div>
+        <div onClick={onAuthRequired} className="cursor-pointer">
+          <UserButton />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AuthModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const router = useRouter();
 
@@ -193,7 +233,7 @@ export default function HomePage() {
     <>
       <div className="flex w-full min-h-screen">
         {/* Fixed sidebar */}
-        <Sidebar />
+        <LandingPageSidebar onAuthRequired={handleAuthRequired} />
 
         {/* Main content area with scrollable content */}
         <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
