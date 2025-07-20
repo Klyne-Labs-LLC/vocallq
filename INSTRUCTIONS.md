@@ -19,12 +19,6 @@ Some bonuses were only if you purchased this codebase during the launch period. 
 - Free License (Send us an email to support@webprodigies.com with your domain name to activate the license)
 - Figma File (Should be included inside the email you received with the codebase)
 
----
-
-
-Note: Some links in this file may have special offers, discounts or limited time bonuses. Not using the links simply means you're saying no to the special offers but does not mean things wont work. Few links are kick back links for us to grab some coffee while we code these awesome projects for you! Thank you in advance for supporting us and hope you love the discounts!
-
----
 
 # 🛠 Installation Manual
 
