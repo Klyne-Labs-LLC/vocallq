@@ -76,7 +76,7 @@ const SubscriptionModal = ({ user }: Props) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Spotlight Subscription</DialogTitle>
+          <DialogTitle>VocallQ Subscription</DialogTitle>
 
         </DialogHeader>
         
