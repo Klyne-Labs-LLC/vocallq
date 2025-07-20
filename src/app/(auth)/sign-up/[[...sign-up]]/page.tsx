@@ -50,7 +50,7 @@ export default function Page() {
           {/* Social Proof */}
           <div className="bg-background/50 border border-border/30 rounded-xl p-6">
             <p className="text-sm text-muted-foreground italic">
-              "VocallQ transformed our webinar ROI. We're converting 3x more leads with half the manual effort."
+              &ldquo;VocallQ transformed our webinar ROI. We&rsquo;re converting 3x more leads with half the manual effort.&rdquo;
             </p>
             <p className="text-xs text-muted-foreground mt-2 font-medium">
               — Sarah Chen, Marketing Director
