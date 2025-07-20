@@ -156,7 +156,7 @@ const AuthPromptFeatureSectionLayout = ({
 
 const AuthPromptOnBoarding = ({ onAuthRequired }: { onAuthRequired: () => void }) => {
   // Mock the status - all steps are pending for unauthenticated users
-  const getStepStatus = (index: number) => {
+  const getStepStatus = (index: number): 'completed' | 'current' | 'pending' => {
     // For landing page, we'll show the first step as current and others as pending
     return index === 0 ? 'current' : 'pending'
   }
