@@ -7,7 +7,7 @@ import UserInfoCard from "@/components/ReusableComponent/UserInfoCard";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import RightIcon from "@/icons/RightIcon";
+import { ArrowRight, Check } from 'lucide-react';
 import PurpleIcon from "@/components/ReusableComponent/PurpleIcon";
 import LightningIcon from '@/icons/LightningIcon';
 import {
@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import Spotlight from '@/icons/Spotlight';
-import { sidebarData } from '@/lib/data';
+import { sidebarData, onBoardingSteps } from '@/lib/data';
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 
@@ -147,7 +147,7 @@ const AuthPromptFeatureSectionLayout = ({
           onClick={onAuthRequired}
           className="text-primary font-semibold text-lg flex items-center justify-center rounded-md opacity-50 cursor-pointer hover:opacity-70 transition-opacity"
         >
-          View <RightIcon className="ml-2 w-6 h-6" />
+          View <ArrowRight className="ml-2 w-6 h-6" />
         </div>
       </div>
     </div>
@@ -155,36 +155,91 @@ const AuthPromptFeatureSectionLayout = ({
 };
 
 const AuthPromptOnBoarding = ({ onAuthRequired }: { onAuthRequired: () => void }) => {
-  const steps = [
-    { id: "1", title: "Connect Stripe Account", description: "Set up payments for your webinars" },
-    { id: "2", title: "Create AI Agent", description: "Configure your automated sales assistant" },
-    { id: "3", title: "Create Webinar", description: "Set up your first live webinar" }
-  ];
+  // Mock the status - all steps are pending for unauthenticated users
+  const getStepStatus = (index: number) => {
+    // For landing page, we'll show the first step as current and others as pending
+    return index === 0 ? 'current' : 'pending'
+  }
 
   return (
     <div className="flex flex-col gap-3 w-full max-w-xl">
-      {steps.map((step) => (
-        <div
-          key={step.id}
-          onClick={onAuthRequired}
-          className="flex items-center gap-3 p-3 rounded-md transition-colors bg-muted/30 hover:bg-muted/50 cursor-pointer"
-        >
-          <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center">
-            <span className="text-xs font-medium">{step.id}</span>
+      {onBoardingSteps.map((step, index) => {
+        const stepStatus = getStepStatus(index)
+
+        return (
+          <div
+            key={step.id}
+            onClick={onAuthRequired}
+            className={`
+              flex items-center gap-3 p-3 rounded-md transition-colors cursor-pointer
+              ${
+                stepStatus === 'completed'
+                  ? 'bg-muted/30 hover:bg-muted/50'
+                  : stepStatus === 'current'
+                    ? 'bg-primary/5 hover:bg-primary/10'
+                    : 'hover:bg-muted/30'
+              }
+            `}
+          >
+            {/* Status Indicator */}
+            <div
+              className={`
+              w-6 h-6 rounded-full flex items-center justify-center
+              ${
+                stepStatus === 'completed'
+                  ? 'bg-[#a76ef6] text-primary'
+                  : stepStatus === 'current'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
+              }
+            `}
+            >
+              {stepStatus === 'completed' ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                <span className="text-xs font-medium">{step.id}</span>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <p
+                className={`
+                text-sm font-medium truncate
+                ${
+                  stepStatus === 'completed'
+                    ? 'text-primary'
+                    : stepStatus === 'current'
+                      ? 'text-primary'
+                      : 'text-foreground'
+                }
+              `}
+              >
+                {step.title}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">
+                {step.description}
+              </p>
+            </div>
+
+            {/* Arrow */}
+            <ArrowRight
+              className={`
+              w-4 h-4 flex-shrink-0
+              ${
+                stepStatus === 'completed'
+                  ? 'text-primary'
+                  : stepStatus === 'current'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+              }
+            `}
+            />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground truncate">
-              {step.title}
-            </p>
-            <p className="text-xs text-muted-foreground truncate">
-              {step.description}
-            </p>
-          </div>
-          <RightIcon className="w-4 h-4 text-muted-foreground" />
-        </div>
-      ))}
+        )
+      })}
     </div>
-  );
+  )
 };
 
 const LandingPageHeader = ({ onAuthRequired }: { onAuthRequired: () => void }) => {
