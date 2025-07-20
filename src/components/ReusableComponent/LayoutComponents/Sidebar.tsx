@@ -15,7 +15,7 @@ const Sidebar = () => {
   const pathname = usePathname()
 
   return (
-    <div className="w-18 sm:w-24 h-screen sticky top-0 py-10 px-2 sm:px-6 border rounded-lg   bg-background border-border flex flex-col items-center justify-start gap-10">
+    <div className="w-18 sm:w-24 h-screen fixed top-0 left-0 bottom-0 py-10 px-2 sm:px-6 border-r bg-background border-border flex flex-col items-center justify-start gap-10 z-50">
       <div className="">
         <Spotlight />
       </div>

@@ -22,22 +22,24 @@ const Layout = async ({ children }: Props) => {
 
 
   return (
-    <div className="flex w-full min-h-screen">
+    <>
       {/* Fixed sidebar */}
       <Sidebar />
 
-      {/* Main content area with scrollable content */}
-      <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
-        {/* Fixed header */}
-        <Header
-          assistants={user?.aiAgents || []}
-          user={user}
-          stripeProducts={stripeProducts.products || []}
-        />
-        {/* Scrollable content area with increased bottom padding */}
-        <div className="flex-1 py-10 ">{children}</div>
+      {/* Main content area with left margin for sidebar */}
+      <div style={{ marginLeft: '6rem' }} className="sm:ml-32 min-h-screen flex flex-col">
+        <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
+          {/* Fixed header */}
+          <Header
+            assistants={user?.aiAgents || []}
+            user={user}
+            stripeProducts={stripeProducts.products || []}
+          />
+          {/* Scrollable content area with increased bottom padding */}
+          <div className="flex-1 py-10">{children}</div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

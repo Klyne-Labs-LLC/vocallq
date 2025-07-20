@@ -91,7 +91,9 @@ export default function RootLayout({
                 <div className="flex-1">
                   {children}
                 </div>
-                <Footer />
+                <div style={{ paddingLeft: '6rem' }} className="sm:pl-32">
+                  <Footer />
+                </div>
               </div>
               <Toaster richColors />
             </ThemeProvider>
