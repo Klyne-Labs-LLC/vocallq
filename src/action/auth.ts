@@ -26,6 +26,37 @@ export const onAuthenticateUser = async () => {
       }
     }
 
+    // Check if user with this email already exists
+    const existingEmailUser = await prismaClient.user.findUnique({
+      where: {
+        email: user.emailAddresses[0].emailAddress,
+      },
+      include:{
+        aiAgents: true,
+      }
+    })
+
+    if (existingEmailUser) {
+      // Update the existing user with new clerkId
+      const updatedUser = await prismaClient.user.update({
+        where: {
+          email: user.emailAddresses[0].emailAddress,
+        },
+        data: {
+          clerkId: user.id,
+          name: user.firstName + ' ' + user.lastName,
+          profileImage: user.imageUrl,
+        },
+        include:{
+          aiAgents: true,
+        }
+      })
+      return {
+        status: 200,
+        user: updatedUser,
+      }
+    }
+
     const newUser = await prismaClient.user.create({
       data: {
         clerkId: user.id,
