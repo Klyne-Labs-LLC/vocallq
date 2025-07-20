@@ -98,7 +98,7 @@ export default function HeroGeometric() {
       transition: {
         duration: 1,
         delay: 0.5 + i * 0.2,
-        ease: [0.25, 0.4, 0.25, 1],
+        ease: "easeOut",
       },
     }),
   }
