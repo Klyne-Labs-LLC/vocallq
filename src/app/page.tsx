@@ -1,227 +1,233 @@
 'use client'
-import { Waitlist } from '@clerk/nextjs'
-import Link from 'next/link'
+import React, { useEffect } from "react";
+import { potentialCustomer } from "@/lib/data";
+import { Upload, Webcam } from "lucide-react";
+import Image from "next/image";
+import UserInfoCard from "@/components/ReusableComponent/UserInfoCard";
+import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import RightIcon from "@/icons/RightIcon";
+import Sidebar from "@/components/ReusableComponent/LayoutComponents/Sidebar";
+import PurpleIcon from "@/components/ReusableComponent/PurpleIcon";
+import LightningIcon from '@/icons/LightningIcon';
 
-import { motion } from 'framer-motion'
-
-import Image from 'next/image'
-import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import { Pacifico } from 'next/font/google'
-
-const pacifico = Pacifico({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-pacifico',
-})
-
-function ElegantShape({
-  className,
-  delay = 0,
-  width = 400,
-  height = 100,
-  rotate = 0,
-  gradient = 'from-white/[0.08]',
+const AuthPromptFeatureCard = ({
+  Icon,
+  heading
 }: {
-  className?: string
-  delay?: number
-  width?: number
-  height?: number
-  rotate?: number
-  gradient?: string
-}) {
+  Icon: React.ReactNode;
+  heading: string;
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: -150,
-        rotate: rotate - 15,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        rotate: rotate,
-      }}
-      transition={{
-        duration: 2.4,
-        delay,
-        ease: [0.23, 0.86, 0.39, 0.96],
-        opacity: { duration: 1.2 },
-      }}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      className={cn('absolute', className)}
+    <div 
+      onClick={handleClick}
+      className='px-8 py-6 flex flex-col items-start justify-center gap-14 rounded-xl border border-border bg-secondary backdrop-blur-xl cursor-pointer hover:bg-secondary/80 transition-colors'
     >
-      <motion.div
-        animate={{
-          y: [0, 15, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: 'easeInOut',
-        }}
-        style={{
-          width,
-          height,
-        }}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        className="relative"
-      >
-        <div
-          className={cn(
-            'absolute inset-0 rounded-full',
-            'bg-gradient-to-r to-transparent',
-            gradient,
-            'backdrop-blur-[2px] border-2 border-white/[0.15]',
-            'shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]',
-            'after:absolute after:inset-0 after:rounded-full',
-            'after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]'
-          )}
-        />
-      </motion.div>
-    </motion.div>
-  )
-}
+      {Icon}
+      <p className='font-semibold text-xl text-primary'>{heading}</p>
+      <div className="flex gap-2 mt-auto">
+        <SignInButton mode="modal">
+          <Button variant="outline" size="sm">Sign In</Button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <Button size="sm">Sign Up</Button>
+        </SignUpButton>
+      </div>
+    </div>
+  );
+};
 
-const badge = 'By Web Prodigies'
-const title1 = 'Welcome To'
-const title2 = 'Spotlight Premium'
-
-export default function HeroGeometric() {
+const AuthPromptFeatureSectionLayout = ({ 
+  children, 
+  heading
+}: { 
+  children: React.ReactNode; 
+  heading: string;
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
-
-      <div className="absolute inset-0 overflow-hidden">
-        <ElegantShape
-          delay={0.3}
-          width={600}
-          height={140}
-          rotate={12}
-          gradient="from-indigo-500/[0.15]"
-          className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
-        />
-
-        <ElegantShape
-          delay={0.5}
-          width={500}
-          height={120}
-          rotate={-15}
-          gradient="from-rose-500/[0.15]"
-          className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
-        />
-
-        <ElegantShape
-          delay={0.4}
-          width={300}
-          height={80}
-          rotate={-8}
-          gradient="from-violet-500/[0.15]"
-          className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
-        />
-
-        <ElegantShape
-          delay={0.6}
-          width={200}
-          height={60}
-          rotate={20}
-          gradient="from-amber-500/[0.15]"
-          className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
-        />
-
-        <ElegantShape
-          delay={0.7}
-          width={150}
-          height={40}
-          rotate={-25}
-          gradient="from-cyan-500/[0.15]"
-          className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
-        />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 md:px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
-          >
-            <Image
-              src="https://kokonutui.com/logo.svg"
-              alt="Kokonut UI"
-              width={20}
-              height={20}
-            />
-            <span className="text-sm text-white/60 tracking-wide">{badge}</span>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
-          >
-            <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
-                {title1}
-              </span>
-              <br />
-              <span
-                className={cn(
-                  'bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 ',
-                  pacifico.className
-                )}
-              >
-                {title2}
-              </span>
-            </h1>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9, ease: "easeOut" }}
-          >
-            <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-              Crafting exceptional digital experiences through innovative design
-              and cutting-edge technology.
-            </p>
-            <div className="flex items-center justify-center flex-col">
-              <Waitlist signInUrl="/sign-in" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.1, ease: "easeOut" }}
-            style={{
-              marginTop: '20px',
-            }}
-          >
-            <p className="text-muted-foreground/50">
-              This codebase is the property of Web Prodigies LLC and is intended
-              solely for customers who have legally obtained a copy of this
-              codebase. Unauthorized reproduction, distribution, or disclosure
-              of any part of this document is strictly prohibited. Web Prodigies
-              LLC. All rights reserved.
-            </p>
-            <Link href="https://webprodigies.com/store/collections/github-codebase">
-              <Badge
-                variant="outline"
-                className="mt-4 text-lg text-primary"
-              >
-                🔥Purchase the codebase by clicking here
-              </Badge>
-            </Link>
-          </motion.div>
+    <div className="p-10 flex items-center justify-between flex-col gap-10 border rounded-3xl border-border bg-background-10">
+      {children}
+      <div className="w-full justify-between items-center flex flex-wrap gap-10">
+        <h3 className="sm:w-[70%] font-semibold text-3xl text-primary">
+          {heading}
+        </h3>
+        <div 
+          onClick={handleClick}
+          className="text-primary font-semibold text-lg flex items-center justify-center rounded-md opacity-50 cursor-pointer hover:opacity-70 transition-opacity"
+        >
+          <span className="mr-2">Sign in to view</span>
+          <RightIcon className="w-6 h-6" />
         </div>
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+      <div className="flex gap-2">
+        <SignInButton mode="modal">
+          <Button variant="outline">Sign In</Button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <Button>Sign Up</Button>
+        </SignUpButton>
+      </div>
     </div>
-  )
+  );
+};
+
+const AuthPromptOnBoarding = () => {
+  const steps = [
+    { id: "1", title: "Connect Stripe Account", description: "Set up payments for your webinars" },
+    { id: "2", title: "Create AI Agent", description: "Configure your automated sales assistant" },
+    { id: "3", title: "Create Webinar", description: "Set up your first live webinar" }
+  ];
+
+  return (
+    <div className="flex flex-col gap-3 w-full max-w-xl">
+      {steps.map((step) => (
+        <div
+          key={step.id}
+          className="flex items-center gap-3 p-3 rounded-md transition-colors bg-muted/30 hover:bg-muted/50 cursor-pointer"
+        >
+          <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center">
+            <span className="text-xs font-medium">{step.id}</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-foreground truncate">
+              {step.title}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {step.description}
+            </p>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            Sign in to start
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const LandingPageHeader = () => {
+  return (
+    <div className="w-full p-4 sticky top-5 z-10 flex justify-between items-center flex-wrap gap-4 border border-border/40 backdrop-blur-2xl rounded-full">
+      <div className="px-4 py-2 flex justify-center text-bold items-center rounded-xl bg-background border border-border text-primary capitalize">
+        VocallQ
+      </div>
+
+      <div className="flex gap-6 items-center flex-wrap">
+        <PurpleIcon>
+          <LightningIcon />
+        </PurpleIcon>
+        <div className="flex gap-2">
+          <SignInButton mode="modal">
+            <Button variant="outline">Sign In</Button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <Button>Get Started</Button>
+          </SignUpButton>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function HomePage() {
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.push('/home');
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+  if (isLoaded && isSignedIn) {
+    return null;
+  }
+
+  return (
+    <div className="flex w-full min-h-screen">
+      {/* Fixed sidebar */}
+      <Sidebar />
+
+      {/* Main content area with scrollable content */}
+      <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
+        {/* Fixed header */}
+        <LandingPageHeader />
+        {/* Scrollable content area with increased bottom padding */}
+        <div className="flex-1 py-10">
+          <div className="w-full mx-auto h-full">
+            <div className="w-full flex flex-col sm:flex-row justify-between items-start gap-14">
+              <div className="space-y-6">
+                <h2 className="text-primary font-semibold text-4xl">
+                  Get maximum Conversion from your webinars
+                </h2>
+                <AuthPromptOnBoarding />
+              </div>
+
+              {/* Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 place-content-center">
+                <AuthPromptFeatureCard
+                  Icon={<Upload className="w-10 h-10" />}
+                  heading="Browse or drag a pre-recorded webinar file"
+                />
+                <AuthPromptFeatureCard
+                  Icon={<Webcam className="w-10 h-10" />}
+                  heading="Browse or drag a pre-recorded webinar file"
+                />
+              </div>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 rounded-xl bg-background-10">
+              <AuthPromptFeatureSectionLayout
+                heading="See how far along are your potential customers"
+              >
+                <div className="p-5 flex flex-col gap-4 items-start border rounded-xl border-border backdrop-blur-3xl">
+                  <div className="w-full flex justify-between items-center gap-3">
+                    <p className="text-primary font-semibold text-sm">Conversions</p>
+                    <p className="text-xs text-muted-foreground font-normal">50</p>
+                  </div>
+                  <div className="flex flex-col gap-4 items-start">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <Image
+                        src="/featurecard.png"
+                        alt="Info-card"
+                        width={250}
+                        height={250}
+                        className="w-full h-full object-cover rounded-xl"
+                        key={index}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </AuthPromptFeatureSectionLayout>
+              <AuthPromptFeatureSectionLayout
+                heading="See the list of your current customers"
+              >
+                <div className="flex gap-4 items-center h-full w-full justify-center relative flex-wrap">
+                  {potentialCustomer.slice(0, 2).map((customer, index) => (
+                    <UserInfoCard customer={customer} tags={customer.tags} key={index} />
+                  ))}
+                  <Image
+                    src={"/glowCard.png"}
+                    alt="Info-card"
+                    width={350}
+                    height={350}
+                    className="object-cover rounded-xl absolute px-5 mb-28 hidden sm:flex backdrop-blur-[20px]"
+                  />
+                </div>
+              </AuthPromptFeatureSectionLayout>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
