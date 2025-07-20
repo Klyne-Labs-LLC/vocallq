@@ -21,7 +21,6 @@ Some bonuses were only if you purchased this codebase during the launch period. 
 
 ---
 
-> 🎁 This project includes a **Free Commercial License**. Please send an email to support@webprodigies.com with the domain name you wish to attach to your project. This will be used as an activation key for your project. You can read our license terms on our website webprodigies/license to learn more on how you can use the license.
 
 Note: Some links in this file may have special offers, discounts or limited time bonuses. Not using the links simply means you're saying no to the special offers but does not mean things wont work. Few links are kick back links for us to grab some coffee while we code these awesome projects for you! Thank you in advance for supporting us and hope you love the discounts!
 
