@@ -10,24 +10,27 @@ AI Webinar SaaS platform with real-time streaming, automated sales agents, and p
 
 ### Installation & Setup
 ```bash
-npm i --legacy-peer-deps  # Required for this codebase
-npx prisma generate       # Generate Prisma client
+npm i --legacy-peer-deps  # Required for this codebase - use only npm, not bun or other CLIs
+npx prisma generate       # Generate Prisma client after schema changes
 ```
 
 ### Development
 ```bash
-npm run dev     # Start development server with Turbopack
+npm run dev     # Start development server with Turbopack (Next.js 15)
 npm run build   # Build for production
 npm run start   # Start production server
-npm run lint    # Run ESLint
+npm run lint    # Run ESLint (uses Next.js 15 ESLint config)
 ```
 
-### Database
+### Database Operations
 ```bash
 npx prisma generate    # Generate Prisma client after schema changes
-npx prisma db push     # Push schema changes to database
-npx prisma studio      # Open Prisma Studio
+npx prisma db push     # Push schema changes to database without migrations
+npx prisma studio      # Open Prisma Studio for database inspection
 ```
+
+### Testing & Quality
+No specific test commands found - follow standard Next.js testing patterns if implementing tests.
 
 ## Architecture Overview
 
@@ -50,12 +53,15 @@ npx prisma studio      # Open Prisma Studio
 
 #### `/src/action/`
 Server actions for database operations and external service integrations:
-- `webinar.ts` - Webinar CRUD operations
-- `auth.ts` - User authentication and validation
+- `webinar.ts` - Webinar CRUD operations and status management
+- `auth.ts` - User authentication and validation with Clerk
 - `stremIo.ts` - Stream.io token generation and call management
-- `stripe.ts` - Payment processing and Stripe Connect
-- `vapi.ts` - AI agent creation and management
-- `resend.ts` - Email notifications
+- `stripe.ts` - Payment processing and Stripe Connect account management
+- `vapi.ts` - AI agent creation and management with default prompt templates
+- `resend.ts` - Email notifications using templates
+- `attendance.ts` - Attendee tracking and attendance management
+- `leads.ts` - Lead generation and qualification tracking
+- `onboarding.ts` - User onboarding flow management
 
 #### `/src/components/`
 - `ui/` - Shadcn/ui components
@@ -77,11 +83,17 @@ Zustand stores for state management:
 ### Database Schema
 
 Key models in Prisma schema:
-- **User**: Clerk-authenticated users with Stripe Connect integration
-- **Webinar**: Live webinar sessions with status tracking
-- **Attendee**: Webinar participants with call status
-- **Attendance**: Join/leave tracking with attendance types
-- **AiAgents**: Vapi AI agent configurations
+- **User**: Clerk-authenticated users with Stripe Connect and subscription integration
+- **Webinar**: Live webinar sessions with status tracking (SCHEDULED, WAITING_ROOM, LIVE, ENDED, CANCELLED)
+- **Attendee**: Webinar participants with call status tracking
+- **Attendance**: Join/leave tracking with attendance types (REGISTERED, ATTENDED, ADDED_TO_CART, FOLLOW_UP, BREAKOUT_ROOM, CONVERTED)
+- **AiAgents**: Vapi AI agent configurations with custom prompts and models
+
+### Database Enums
+- `WebinarStatusEnum`: SCHEDULED, WAITING_ROOM, LIVE, ENDED, CANCELLED
+- `AttendedTypeEnum`: REGISTERED, ATTENDED, ADDED_TO_CART, FOLLOW_UP, BREAKOUT_ROOM, CONVERTED
+- `CtaTypeEnum`: BUY_NOW, BOOK_A_CALL
+- `CallStatusEnum`: PENDING, InProgress, COMPLETED
 
 ### Authentication & Middleware
 
@@ -94,12 +106,13 @@ Clerk middleware protects all routes except:
 ### Environment Variables
 
 Required environment variables (see `.env.example`):
-- Database: `DATABASE_URL` (PostgreSQL)
-- Clerk: `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
-- Stripe: `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-- Vapi: `VAPI_PRIVATE_KEY`, `NEXT_PUBLIC_VAPI_API_KEY`
-- Stream.io: `NEXT_PUBLIC_STREAM_API_KEY`, `STREAM_SECRET`
-- Resend: `RESEND_API_KEY`
+- **Database**: `DATABASE_URL` (PostgreSQL connection string)
+- **Clerk Auth**: `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
+- **Stripe Payments**: `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_STRIPE_CLIENT_ID`, `STRIPE_WEBHOOK_SECRET`
+- **Vapi AI**: `VAPI_PRIVATE_KEY`, `VAPI_ORG_ID`, `NEXT_PUBLIC_VAPI_API_KEY`
+- **Stream.io**: `NEXT_PUBLIC_STREAM_API_KEY`, `STREAM_SECRET`
+- **Resend Email**: `RESEND_API_KEY`
+- **App Config**: `NEXT_PUBLIC_BASE_URL`, `ENVIRONMENT`
 
 ## Development Patterns
 
@@ -127,8 +140,9 @@ Follow existing Tailwind patterns. Use Radix UI components from `/src/components
 
 ### Vapi AI
 - AI agents created through `/src/action/vapi.ts`
-- Default sales prompt template in `/src/lib/data.ts`
+- Default lead qualification prompt template in `/src/lib/data.ts` (`aiAgentPrompt`)
 - Agents can be associated with webinars for automated sales calls
+- Subscription price configuration in data.ts (`subscriptionPriceId`)
 
 ### Stripe
 - Connect accounts for presenters to receive payments
@@ -138,3 +152,15 @@ Follow existing Tailwind patterns. Use Radix UI components from `/src/components
 ### Resend
 - Email notifications for webinar start times
 - Templates in `/src/lib/webinarStartEmailTemplate.tsx`
+
+## Important Development Notes
+
+### Package Management
+- **CRITICAL**: Use only `npm` with `--legacy-peer-deps` flag
+- Do not use bun, yarn, or other package managers as they may cause dependency conflicts
+
+### Data & Configuration
+- Default AI agent prompt template is comprehensive and production-ready in `/src/lib/data.ts`
+- Sidebar navigation configuration in `/src/lib/data.ts` (`sidebarData`)
+- Onboarding steps configuration in `/src/lib/data.ts` (`onBoardingSteps`)
+- Pipeline tags for lead qualification in `/src/lib/data.ts` (`pipelineTags`)
