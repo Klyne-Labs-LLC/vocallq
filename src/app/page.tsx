@@ -27,6 +27,7 @@ import Spotlight from '@/icons/Spotlight';
 import { sidebarData, onBoardingSteps } from '@/lib/data';
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
+import Footer from '@/components/ReusableComponent/Footer';
 
 const LandingPageSidebar = ({ onAuthRequired }: { onAuthRequired: () => void }) => {
   const pathname = usePathname();
@@ -286,12 +287,12 @@ export default function HomePage() {
   }
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       {/* Fixed sidebar */}
       <LandingPageSidebar onAuthRequired={handleAuthRequired} />
 
       {/* Main content area with left margin for sidebar */}
-      <div style={{ marginLeft: '6rem' }} className="sm:ml-32 min-h-screen">
+      <div style={{ marginLeft: '6rem' }} className="sm:ml-32 flex-1">
         <div className="flex flex-col w-full min-h-screen px-4 scrollbar-hide container mx-auto">
           {/* Fixed header */}
           <LandingPageHeader onAuthRequired={handleAuthRequired} />
@@ -367,8 +368,13 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <div style={{ paddingLeft: '6rem' }} className="sm:pl-32">
+        <Footer />
+      </div>
       
       <AuthModal isOpen={showAuthModal} onClose={closeAuthModal} />
-    </>
+    </div>
   );
 }

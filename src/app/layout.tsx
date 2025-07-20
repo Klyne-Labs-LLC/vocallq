@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import StreamProvider from "@/provider/StreamProvider";
-import Footer from "@/components/ReusableComponent/Footer";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -87,14 +86,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div className="min-h-screen flex flex-col">
-                <div className="flex-1">
-                  {children}
-                </div>
-                <div style={{ paddingLeft: '6rem' }} className="sm:pl-32">
-                  <Footer />
-                </div>
-              </div>
+              {children}
               <Toaster richColors />
             </ThemeProvider>
           </StreamProvider>
