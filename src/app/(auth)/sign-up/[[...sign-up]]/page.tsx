@@ -86,6 +86,8 @@ export default function Page() {
           {/* Clerk Sign Up Component */}
           <div className="flex justify-center">
             <SignUp 
+              signInUrl="/sign-in"
+              forceRedirectUrl="/callback"
               appearance={{
                 elements: {
                   rootBox: "w-full",

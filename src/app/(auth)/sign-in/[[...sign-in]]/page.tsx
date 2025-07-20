@@ -76,6 +76,8 @@ const Signin = () => {
           {/* Clerk Sign In Component */}
           <div className="flex justify-center">
             <SignIn 
+              signUpUrl="/sign-up"
+              forceRedirectUrl="/callback"
               appearance={{
                 elements: {
                   rootBox: "w-full",
