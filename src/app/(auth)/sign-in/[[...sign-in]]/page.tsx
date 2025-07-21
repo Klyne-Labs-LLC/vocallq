@@ -12,7 +12,7 @@ const Signin = () => {
         <div className="max-w-md text-center space-y-8">
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <Image src="/logo.svg" alt="VocallQ Logo" width={64} height={64} />
+            <Image src="/logo.svg" alt="VocallQ Logo" width={80} height={80} />
           </div>
           
           {/* Brand Name */}
@@ -60,7 +60,7 @@ const Signin = () => {
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center mb-8">
             <div className="flex flex-col items-center gap-4">
-              <Image src="/logo.svg" alt="VocallQ Logo" width={48} height={48} />
+              <Image src="/logo.svg" alt="VocallQ Logo" width={56} height={56} />
               <div className="px-4 py-2 flex justify-center text-bold items-center rounded-xl bg-background border border-border text-primary text-xl font-bold">
                 VocallQ
               </div>

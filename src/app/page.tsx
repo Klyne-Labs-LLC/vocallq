@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import Spotlight from '@/icons/Spotlight';
+import Image from 'next/image';
 import { sidebarData, onBoardingSteps } from '@/lib/data';
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
@@ -35,7 +35,7 @@ const LandingPageSidebar = ({ onAuthRequired }: { onAuthRequired: () => void }) 
   return (
     <div className="w-18 sm:w-24 h-screen fixed top-0 left-0 bottom-0 py-10 px-2 sm:px-6 border-r bg-background border-border flex flex-col items-center justify-start gap-10 z-50">
       <div className="">
-        <Spotlight />
+        <Image src="/logo.svg" alt="VocallQ Logo" width={40} height={40} />
       </div>
       {/* Sidebar Menu */}
       <div className="w-full h-full justify-between items-center flex flex-col">
