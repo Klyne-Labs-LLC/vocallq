@@ -23,7 +23,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import Image from 'next/image';
 import { sidebarData, onBoardingSteps } from '@/lib/data';
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
