@@ -12,7 +12,7 @@ export default function Page() {
         <div className="max-w-md text-center space-y-8">
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <Image src="/logo.svg" alt="VocallQ Logo" width={80} height={80} />
+            <Image src="/logo.svg" alt="VocallQ Logo" width={100} height={100} />
           </div>
           
           {/* Brand Name */}
@@ -70,7 +70,7 @@ export default function Page() {
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center mb-8">
             <div className="flex flex-col items-center gap-4">
-              <Image src="/logo.svg" alt="VocallQ Logo" width={56} height={56} />
+              <Image src="/logo.svg" alt="VocallQ Logo" width={72} height={72} />
               <div className="px-4 py-2 flex justify-center text-bold items-center rounded-xl bg-background border border-border text-primary text-xl font-bold">
                 VocallQ
               </div>
