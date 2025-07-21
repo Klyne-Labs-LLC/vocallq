@@ -46,6 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: "https://vocallq.app",
     title: "VocallQ - AI-Powered Webinar Platform for Maximum Conversions",
     description: "Transform your webinars into conversion machines with VocallQ's AI-powered platform. Features real-time streaming, automated sales agents, and seamless payment integration.",
     siteName: "VocallQ",
