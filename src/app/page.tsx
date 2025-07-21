@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/tooltip';
 import { sidebarData, onBoardingSteps } from '@/lib/data';
 import { UserButton } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 import { usePathname } from 'next/navigation';
 import Footer from '@/components/ReusableComponent/Footer';
 
@@ -63,7 +64,7 @@ const LandingPageSidebar = ({ onAuthRequired }: { onAuthRequired: () => void }) 
         <div onClick={onAuthRequired} className="cursor-pointer">
           <UserButton 
             appearance={{
-              baseTheme: "dark",
+              baseTheme: dark,
               elements: {
                 avatarBox: "w-10 h-10",
                 userButtonPopoverCard: "bg-card border border-border shadow-lg dark:bg-card dark:border-border",

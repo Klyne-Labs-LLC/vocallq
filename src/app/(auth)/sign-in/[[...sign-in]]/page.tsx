@@ -1,4 +1,5 @@
 import { SignIn } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 import React from 'react'
 import Image from 'next/image'
 import PurpleIcon from '@/components/ReusableComponent/PurpleIcon'
@@ -77,7 +78,7 @@ const Signin = () => {
           <div className="flex justify-center">
             <SignIn 
               appearance={{
-                baseTheme: "dark",
+                baseTheme: dark,
                 elements: {
                   rootBox: "w-full",
                   card: "bg-card border border-border shadow-lg dark:bg-card dark:border-border",

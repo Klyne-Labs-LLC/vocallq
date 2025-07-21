@@ -8,6 +8,7 @@ import {
 import Image from 'next/image'
 import { sidebarData } from '@/lib/data'
 import { UserButton } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -45,7 +46,7 @@ const Sidebar = () => {
         </div>
         <UserButton 
           appearance={{
-            baseTheme: "dark",
+            baseTheme: dark,
             elements: {
               avatarBox: "w-10 h-10",
               userButtonPopoverCard: "bg-card border border-border shadow-lg dark:bg-card dark:border-border",
