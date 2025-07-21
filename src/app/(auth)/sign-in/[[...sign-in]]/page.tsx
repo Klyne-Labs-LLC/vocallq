@@ -77,14 +77,22 @@ const Signin = () => {
           <div className="flex justify-center">
             <SignIn 
               appearance={{
+                baseTheme: "dark",
                 elements: {
                   rootBox: "w-full",
-                  card: "bg-background border border-border/40 shadow-lg",
-                  headerTitle: "text-primary",
-                  headerSubtitle: "text-muted-foreground",
-                  formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground",
-                  formFieldInput: "bg-background border-border text-foreground",
-                  footerActionLink: "text-primary hover:text-primary/80"
+                  card: "bg-card border border-border shadow-lg dark:bg-card dark:border-border",
+                  headerTitle: "text-card-foreground dark:text-card-foreground",
+                  headerSubtitle: "text-muted-foreground dark:text-muted-foreground",
+                  socialButtonsBlockButton: "bg-card border border-border text-card-foreground hover:bg-accent dark:bg-card dark:border-border dark:text-card-foreground dark:hover:bg-accent",
+                  socialButtonsBlockButtonText: "text-card-foreground dark:text-card-foreground",
+                  dividerLine: "bg-border dark:bg-border",
+                  dividerText: "text-muted-foreground dark:text-muted-foreground",
+                  formFieldInput: "bg-background border-border text-foreground dark:bg-background dark:border-border dark:text-foreground",
+                  formFieldLabel: "text-foreground dark:text-foreground",
+                  formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-primary dark:hover:bg-primary/90 dark:text-primary-foreground",
+                  footerActionLink: "text-primary hover:text-primary/80 dark:text-primary dark:hover:text-primary/80",
+                  identityPreviewText: "text-foreground dark:text-foreground",
+                  identityPreviewEditButton: "text-primary hover:text-primary/80 dark:text-primary dark:hover:text-primary/80"
                 }
               }}
             />

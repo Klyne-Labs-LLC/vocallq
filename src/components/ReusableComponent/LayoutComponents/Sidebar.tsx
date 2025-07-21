@@ -43,7 +43,19 @@ const Sidebar = () => {
             </TooltipProvider>
           ))}
         </div>
-        <UserButton />
+        <UserButton 
+          appearance={{
+            baseTheme: "dark",
+            elements: {
+              avatarBox: "w-10 h-10",
+              userButtonPopoverCard: "bg-card border border-border shadow-lg dark:bg-card dark:border-border",
+              userButtonPopoverActionButton: "text-card-foreground hover:bg-accent dark:text-card-foreground dark:hover:bg-accent",
+              userButtonPopoverActionButtonText: "text-card-foreground dark:text-card-foreground",
+              userButtonPopoverActionButtonIcon: "text-card-foreground dark:text-card-foreground",
+              userButtonPopoverFooter: "bg-card border-t border-border dark:bg-card dark:border-border"
+            }
+          }}
+        />
       </div>
     </div>
   )
