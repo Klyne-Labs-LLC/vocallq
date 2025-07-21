@@ -78,6 +78,7 @@ model Webinar {
   lockChat        Boolean           @default(false)
   stripeProductId String?           @db.VarChar(255)
   aiAgentId       String?           @db.Uuid
+  aiAgent         AiAgents?         @relation("WebinarAiAgent", fields: [aiAgentId], references: [id])
   priceId         String?           @db.VarChar(255)
   recordingUrl    String?
   thumbnail       String?
@@ -123,15 +124,17 @@ model Attendance {
 }
 
 model AiAgents {
-  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String  @db.VarChar(100)
-  firstMessage String  @db.Text
-  prompt     String  @db.Text
-  model      String  @db.VarChar(50)
-  provider   String  @db.VarChar(50)
-  userId    String   @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String    @db.VarChar(100)
+  firstMessage String    @db.Text
+  prompt       String    @db.Text
+  model        String    @db.VarChar(50)
+  provider     String    @db.VarChar(50)
+  userId       String    @db.Uuid
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  webinars     Webinar[] @relation("WebinarAiAgent")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  User User[]
+  @@index([userId])
 }
