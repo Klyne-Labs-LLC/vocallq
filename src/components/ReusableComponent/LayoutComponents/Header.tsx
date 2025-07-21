@@ -31,7 +31,7 @@ const Header = ({ assistants, user, stripeProducts }: Props) => {
         </Button>
       ) : (
         <div className="px-4 py-2 flex justify-center text-bold items-center rounded-xl bg-background border border-border text-primary capitalize">
-          {pathname.split('/')[1]}
+          {pathname.split('/')[1] === 'ai-agents' ? 'AI Agents' : pathname.split('/')[1]}
         </div>
       )}
 
