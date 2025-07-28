@@ -49,13 +49,13 @@ export const WebinarAnalytics = ({ webinarId }: WebinarAnalyticsProps) => {
       
       if (result.status === 200) {
         // Create downloadable transcript file
-        const transcriptContent = formatTranscriptForDownload(result.data);
+        const transcriptContent = formatTranscriptForDownload(result.data!);
         const blob = new Blob([transcriptContent], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${result.data.webinar.title.replace(/[^a-z0-9]/gi, '_')}_transcript.txt`;
+        a.download = `${result.data!.webinar.title.replace(/[^a-z0-9]/gi, '_')}_transcript.txt`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
