@@ -118,8 +118,8 @@ export interface TranscriptSegmentData {
   startTime: number;
   endTime: number;
   confidence?: number;
-  speaker?: string;
-  sentiment?: number;
+  speaker?: string | null;
+  sentiment?: number | null;
 }
 
 export interface SentimentResult {
