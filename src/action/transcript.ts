@@ -3,8 +3,8 @@
 import { prismaClient } from "@/lib/prismaClient";
 import { assemblyaiClient } from "@/lib/assemblyai/assemblyaiClient";
 import { onAuthenticateUser } from "./auth";
-import { TranscriptStatusEnum, EngagementLevelEnum } from "@prisma/client";
-import type { TranscriptionConfig, WebinarAnalysis } from "@/lib/assemblyai/types";
+import { TranscriptStatusEnum } from "@prisma/client";
+import type { TranscriptionConfig } from "@/lib/assemblyai/types";
 
 /**
  * Process webinar recording with AssemblyAI
@@ -83,27 +83,36 @@ export const processWebinarRecording = async (webinarId: string, recordingUrl: s
  * Update transcript record with AssemblyAI results
  * CORRECTED: Uses proper field names from AssemblyAI response
  */
-const updateTranscriptWithResults = async (transcriptId: string, result: any) => {
+const updateTranscriptWithResults = async (transcriptId: string, result: Record<string, unknown>) => {
   // Process segments with correct field mapping
-  const segments = result.utterances?.map((utterance: any) => ({
+  const utterances = result.utterances as Array<{
+    text: string;
+    start: number;
+    end: number;
+    confidence: number;
+    speaker: string;
+    sentiment?: string;
+  }> || [];
+
+  const segments = utterances.map((utterance) => ({
     text: utterance.text,
     startTime: utterance.start / 1000, // Convert milliseconds to seconds
     endTime: utterance.end / 1000,
     confidence: utterance.confidence,
     speaker: utterance.speaker,
     sentiment: calculateSentimentScore(utterance),
-  })) || [];
+  }));
 
   await prismaClient.webinarTranscript.update({
     where: { id: transcriptId },
     data: {
-      assemblyAiId: result.id, // Store AssemblyAI transcript ID
-      transcriptText: result.text,
+      assemblyAiId: result.id as string, // Store AssemblyAI transcript ID
+      transcriptText: result.text as string,
       status: TranscriptStatusEnum.COMPLETED,
-      confidence: result.confidence,
-      audioDuration: Math.round(result.audio_duration), // CORRECTED field name
-      autoHighlights: result.auto_highlights_result || [], // CORRECTED field name
-      sentimentResults: result.sentiment_analysis_results || [], // CORRECTED field name
+      confidence: result.confidence as number,
+      audioDuration: Math.round(result.audio_duration as number), // CORRECTED field name
+      autoHighlights: (result.auto_highlights_result as Record<string, unknown>[]) || [], // CORRECTED field name
+      sentimentResults: (result.sentiment_analysis_results as Record<string, unknown>[]) || [], // CORRECTED field name
       segments: {
         create: segments,
       },
@@ -178,15 +187,26 @@ export const getWebinarTranscript = async (webinarId: string) => {
  * Generate insights from transcript
  * CORRECTED: Uses proper AssemblyAI response fields
  */
-const generateWebinarInsights = async (webinarId: string, transcript: any) => {
+const generateWebinarInsights = async (webinarId: string, transcript: Record<string, unknown>) => {
+  const sentimentResults = transcript.sentiment_analysis_results as Array<{
+    sentiment: string;
+  }> || [];
+
+  const autoHighlights = transcript.auto_highlights_result as {
+    results?: Array<{
+      text: string;
+      start: number;
+    }>;
+  };
+
   const insights = {
-    overallSentiment: calculateOverallSentiment(transcript.sentiment_analysis_results),
-    questionCount: (transcript.text.match(/\?/g) || []).length,
-    topKeywords: transcript.auto_highlights_result?.results
+    overallSentiment: calculateOverallSentiment(sentimentResults),
+    questionCount: ((transcript.text as string)?.match(/\?/g) || []).length,
+    topKeywords: autoHighlights?.results
       ?.slice(0, 10)
-      .map((h: any) => h.text) || [],
+      .map((h) => h.text) || [],
     engagementScore: calculateEngagementScore(transcript),
-    averageConfidence: transcript.confidence,
+    averageConfidence: transcript.confidence as number,
   };
 
   await prismaClient.webinarInsights.upsert({
@@ -202,14 +222,14 @@ const generateWebinarInsights = async (webinarId: string, transcript: any) => {
 };
 
 // Helper functions with proper implementations
-const calculateSentimentScore = (utterance: any): number => {
+const calculateSentimentScore = (utterance: { sentiment?: string }): number => {
   // Convert AssemblyAI sentiment to numerical score
   if (!utterance.sentiment) return 0;
   return utterance.sentiment === 'POSITIVE' ? 0.5 : 
          utterance.sentiment === 'NEGATIVE' ? -0.5 : 0;
 };
 
-const calculateOverallSentiment = (sentimentResults: any[]): number => {
+const calculateOverallSentiment = (sentimentResults: Array<{ sentiment: string }>): number => {
   if (!sentimentResults?.length) return 0;
   
   const total = sentimentResults.reduce((acc, curr) => {
@@ -220,26 +240,35 @@ const calculateOverallSentiment = (sentimentResults: any[]): number => {
   return total / sentimentResults.length;
 };
 
-const calculateEngagementScore = (transcript: any): number => {
+const calculateEngagementScore = (transcript: Record<string, unknown>): number => {
   // Calculate based on speaking patterns, interruptions, etc.
-  const utteranceCount = transcript.utterances?.length || 0;
-  const speakerCount = new Set(transcript.utterances?.map((u: any) => u.speaker) || []).size;
+  const utterances = transcript.utterances as Array<{ speaker: string }> || [];
+  const utteranceCount = utterances.length;
+  const speakerCount = new Set(utterances.map((u) => u.speaker)).size;
   
   // Normalize engagement based on interaction patterns
   return Math.min(1.0, (utteranceCount * speakerCount) / 500);
 };
 
-const extractKeyMoments = (transcript: any): any[] => {
+const extractKeyMoments = (transcript: Record<string, unknown>): Array<Record<string, unknown>> => {
   // Extract moments based on highlights and sentiment spikes
-  return transcript.auto_highlights_result?.results?.slice(0, 5).map((highlight: any) => ({
+  const autoHighlights = transcript.auto_highlights_result as {
+    results?: Array<{
+      start: number;
+      text: string;
+    }>;
+  };
+
+  return autoHighlights?.results?.slice(0, 5).map((highlight) => ({
     timestamp: highlight.start / 1000,
     description: highlight.text,
     type: 'highlight',
   })) || [];
 };
 
-const calculateAudienceParticipation = (transcript: any): number => {
+const calculateAudienceParticipation = (transcript: Record<string, unknown>): number => {
   // Calculate based on speaker distribution
-  const speakers = new Set(transcript.utterances?.map((u: any) => u.speaker) || []);
+  const utterances = transcript.utterances as Array<{ speaker: string }> || [];
+  const speakers = new Set(utterances.map((u) => u.speaker));
   return Math.min(1.0, (speakers.size - 1) / 5); // Normalize audience speakers
 }; 
