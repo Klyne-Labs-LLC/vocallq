@@ -187,8 +187,22 @@ export const changeWebinarStatus = async (
       },
       data: {
         webinarStatus: status,
+        // Auto-process recording when webinar ends
+        ...(status === WebinarStatusEnum.ENDED && {
+          endTime: new Date(),
+        }),
       },
     });
+
+    // Trigger transcript processing if webinar ended and has recording
+    if (status === WebinarStatusEnum.ENDED && webinar.recordingUrl && webinar.autoTranscriptEnabled) {
+      // Import the transcript processing function
+      const { processWebinarRecording } = await import('./transcript');
+      
+      // Trigger background processing (don't await to avoid blocking)
+      processWebinarRecording(webinarId, webinar.recordingUrl)
+        .catch(error => console.error('Background transcript processing failed:', error));
+    }
 
     return {
       status: 200,
@@ -202,6 +216,78 @@ export const changeWebinarStatus = async (
       status: 500,
       success: false,
       message: "Failed to update webinar status. Please try again.",
+    };
+  }
+};
+
+/**
+ * Enable live transcription for a webinar
+ */
+export const enableLiveTranscription = async (webinarId: string) => {
+  try {
+    const user = await onAuthenticateUser();
+    if (!user.user) {
+      return { status: 401, message: "Unauthorized" };
+    }
+
+    const webinar = await prismaClient.webinar.update({
+      where: {
+        id: webinarId,
+        presenterId: user.user.id,
+      },
+      data: {
+        liveTranscriptionEnabled: true,
+      },
+    });
+
+    return {
+      status: 200,
+      success: true,
+      message: "Live transcription enabled",
+      data: webinar,
+    };
+  } catch (error) {
+    console.error("Error enabling live transcription:", error);
+    return {
+      status: 500,
+      success: false,
+      message: "Failed to enable live transcription",
+    };
+  }
+};
+
+/**
+ * Disable live transcription for a webinar
+ */
+export const disableLiveTranscription = async (webinarId: string) => {
+  try {
+    const user = await onAuthenticateUser();
+    if (!user.user) {
+      return { status: 401, message: "Unauthorized" };
+    }
+
+    const webinar = await prismaClient.webinar.update({
+      where: {
+        id: webinarId,
+        presenterId: user.user.id,
+      },
+      data: {
+        liveTranscriptionEnabled: false,
+      },
+    });
+
+    return {
+      status: 200,
+      success: true,
+      message: "Live transcription disabled",
+      data: webinar,
+    };
+  } catch (error) {
+    console.error("Error disabling live transcription:", error);
+    return {
+      status: 500,
+      success: false,
+      message: "Failed to disable live transcription",
     };
   }
 };
