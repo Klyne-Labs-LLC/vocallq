@@ -37,6 +37,20 @@ enum CallStatusEnum {
   COMPLETED
 }
 
+enum TranscriptStatusEnum {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum EngagementLevelEnum {
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
+}
+
 model User {
   id               String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name             String     @db.VarChar(100)
