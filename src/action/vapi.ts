@@ -20,6 +20,21 @@ export const createAssistant = async (name: string, userId: string) => {
         ],
         temperature: 0.5,
       },
+      transcriber: {
+        provider: "assembly-ai",
+        model: "universal-streaming",
+        formatTurns: false,
+        endpointing: 255,
+      },
+      startSpeakingPlan: {
+        waitSeconds: 0.4,
+        smartEndpointingEnabled: false,
+      },
+      stopSpeakingPlan: {
+        numWords: 0,
+        voiceSeconds: 0.2,
+        backoffSeconds: 0.8,
+      },
       serverMessages: [],
     });
 
@@ -69,6 +84,21 @@ export const updateAssistant = async (
             content: systemPrompt,
           },
         ],
+      },
+      transcriber: {
+        provider: "assembly-ai",
+        model: "universal-streaming",
+        formatTurns: false,
+        endpointing: 255,
+      },
+      startSpeakingPlan: {
+        waitSeconds: 0.4,
+        smartEndpointingEnabled: false,
+      },
+      stopSpeakingPlan: {
+        numWords: 0,
+        voiceSeconds: 0.2,
+        backoffSeconds: 0.8,
       },
       serverMessages: [],
     });
