@@ -9,16 +9,11 @@ interface LiveCaptionsProps {
   position: 'bottom' | 'top' | 'overlay';
 }
 
-interface RealtimeTranscriber {
-  on: (event: string, callback: (data: unknown) => void) => void;
-  connect: () => Promise<void>;
-  close: () => void;
-}
-
 export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps) => {
   const [captions, setCaptions] = useState<CaptionSegment[]>([]);
   const [currentCaption, setCurrentCaption] = useState<string>('');
   const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const transcriberRef = useRef<any>(null);
 
   useEffect(() => {
