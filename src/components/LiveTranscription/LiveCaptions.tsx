@@ -76,32 +76,7 @@ export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps
     };
   }, [enabled, webinarId]);
 
-  // Save live transcription to database
-  const saveLiveTranscription = async (webinarId: string, turn: {
-    turn_order: number;
-    transcript: string;
-    turn_is_formatted: boolean;
-    end_of_turn: boolean;
-    end_of_turn_confidence?: number;
-  }) => {
-    try {
-      await fetch('/api/live-transcription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          webinarId,
-          turnOrder: turn.turn_order,
-          text: turn.transcript,
-          isFormatted: turn.turn_is_formatted,
-          endOfTurn: turn.end_of_turn,
-          endOfTurnConfidence: turn.end_of_turn_confidence,
-          timestamp: Date.now() / 1000, // Convert to seconds
-        }),
-      });
-    } catch (error) {
-      console.error('Failed to save live transcription:', error);
-    }
-  };
+
 
   if (!enabled) return null;
 
