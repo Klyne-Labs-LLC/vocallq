@@ -12,7 +12,7 @@ import { EngagementTimeline } from './EngagementTimeline';
 import { SpeakerBreakdown } from './SpeakerBreakdown';
 import { getWebinarAnalytics, getTranscriptForDownload } from '@/action/analytics';
 import { toast } from 'sonner';
-import type { WebinarAnalyticsData, TranscriptDownloadData, KeyMoment } from '@/lib/assemblyai/types';
+import type { KeyMoment } from '@/lib/assemblyai/types';
 
 interface WebinarAnalyticsProps {
   webinarId: string;
@@ -93,7 +93,6 @@ export const WebinarAnalytics = ({ webinarId }: WebinarAnalyticsProps) => {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { transcript, insights, attendanceData } = analyticsData;
 
   return (
@@ -265,6 +264,7 @@ export const WebinarAnalytics = ({ webinarId }: WebinarAnalyticsProps) => {
 };
 
 // Helper function to format transcript for download
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatTranscriptForDownload = (data: any): string => {
   const { webinar, transcript } = data;
   let content = '';
@@ -283,6 +283,7 @@ const formatTranscriptForDownload = (data: any): string => {
   content += `==========\n\n`;
   
   if (transcript.segments && transcript.segments.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     transcript.segments.forEach((segment: any) => {
       content += `[${segment.timestamp}] ${segment.speaker}: ${segment.text}\n\n`;
     });
@@ -296,6 +297,7 @@ const formatTranscriptForDownload = (data: any): string => {
     content += `==============\n\n`;
     
     if (data.insights.highlights && data.insights.highlights.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data.insights.highlights.forEach((highlight: any, index: number) => {
         content += `${index + 1}. ${highlight.text || highlight}\n`;
       });

@@ -3,10 +3,6 @@
 import { prismaClient } from "@/lib/prismaClient";
 import { onAuthenticateUser } from "./auth";
 import type { 
-  WebinarAnalyticsData, 
-  TranscriptDownloadData, 
-  SpeakerAnalyticsResponse, 
-  EngagementTimelinePoint,
   TranscriptSegmentData
 } from "@/lib/assemblyai/types";
 
@@ -161,12 +157,13 @@ export const getTranscriptForDownload = async (webinarId: string) => {
         confidence: Math.round((transcript.confidence || 0) * 100),
         processingTime: transcript.processingTime,
       },
-      insights: transcript.autoHighlights ? {
-        highlights: Array.isArray(transcript.autoHighlights) 
-          ? transcript.autoHighlights 
-          : (transcript.autoHighlights as any)?.results || [],
-        sentiment: transcript.sentimentResults || [],
-      } : null,
+             insights: transcript.autoHighlights ? {
+         highlights: Array.isArray(transcript.autoHighlights) 
+           ? transcript.autoHighlights 
+           // eslint-disable-next-line @typescript-eslint/no-explicit-any
+           : (transcript.autoHighlights as any)?.results || [],
+         sentiment: transcript.sentimentResults || [],
+       } : null,
     };
 
     return {
