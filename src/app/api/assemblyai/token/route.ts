@@ -20,7 +20,7 @@ export async function GET() {
     // Generate temporary token for client-side streaming
     // Token expires in 5 minutes for security
     const token = await assemblyaiClient.realtime.createTemporaryToken({
-      expiresIn: 300, // 5 minutes
+      expires_in: 300, // 5 minutes
     });
 
     return NextResponse.json({ 
