@@ -75,7 +75,6 @@ export const TranscriptViewer = ({ webinarId, transcript }: TranscriptViewerProp
             </CardContent>
           </Card>
         ) : (
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           filteredSegments.map((segment: any, index: number) => (
             <Card key={segment.id || index}>
               <CardContent className="pt-4">
