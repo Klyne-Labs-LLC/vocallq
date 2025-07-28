@@ -22,7 +22,6 @@ export const createAssistant = async (name: string, userId: string) => {
       },
       transcriber: {
         provider: "assembly-ai",
-        model: "universal-streaming",
         formatTurns: false,
         endpointing: 255,
       },
@@ -87,7 +86,6 @@ export const updateAssistant = async (
       },
       transcriber: {
         provider: "assembly-ai",
-        model: "universal-streaming",
         formatTurns: false,
         endpointing: 255,
       },
