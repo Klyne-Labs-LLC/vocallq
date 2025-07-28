@@ -2,6 +2,13 @@
 
 import { prismaClient } from "@/lib/prismaClient";
 import { onAuthenticateUser } from "./auth";
+import type { 
+  WebinarAnalyticsData, 
+  TranscriptDownloadData, 
+  SpeakerAnalyticsResponse, 
+  EngagementTimelinePoint,
+  TranscriptSegmentData
+} from "@/lib/assemblyai/types";
 
 /**
  * Get comprehensive webinar analytics
@@ -235,17 +242,25 @@ export const getSpeakerAnalytics = async (webinarId: string) => {
       }
 
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, {
+      name: string;
+      totalTime: number;
+      turns: number;
+      avgConfidence: number;
+      totalConfidence: number;
+      segments: TranscriptSegmentData[];
+      sentimentScores: number[];
+    }>);
 
     // Calculate averages and percentages
     const totalDuration = segments.reduce((sum, seg) => sum + (seg.endTime - seg.startTime), 0);
     
-    const speakerAnalytics = Object.values(speakerMetrics).map((speaker: any) => ({
+    const speakerAnalytics = Object.values(speakerMetrics).map((speaker) => ({
       ...speaker,
       avgConfidence: Math.round((speaker.totalConfidence / speaker.turns) * 100),
       speakingPercentage: Math.round((speaker.totalTime / totalDuration) * 100),
       avgSentiment: speaker.sentimentScores.length > 0 
-        ? speaker.sentimentScores.reduce((sum: number, score: number) => sum + score, 0) / speaker.sentimentScores.length
+        ? speaker.sentimentScores.reduce((sum, score) => sum + score, 0) / speaker.sentimentScores.length
         : 0,
       formattedTime: formatDuration(speaker.totalTime),
     })).sort((a, b) => b.totalTime - a.totalTime);

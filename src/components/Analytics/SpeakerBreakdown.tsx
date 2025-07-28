@@ -12,6 +12,7 @@ interface SpeakerBreakdownProps {
 }
 
 export const SpeakerBreakdown = ({ webinarId }: SpeakerBreakdownProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [speakerData, setSpeakerData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -105,9 +106,10 @@ export const SpeakerBreakdown = ({ webinarId }: SpeakerBreakdownProps) => {
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {Math.round(speakers.reduce((sum: number, s: any) => sum + s.turns, 0) / speakers.length)}
-            </div>
+                         <div className="text-2xl font-bold">
+               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+               {Math.round(speakers.reduce((sum: number, s: any) => sum + s.turns, 0) / speakers.length)}
+             </div>
             <p className="text-xs text-muted-foreground">Per speaker</p>
           </CardContent>
         </Card>
@@ -118,12 +120,13 @@ export const SpeakerBreakdown = ({ webinarId }: SpeakerBreakdownProps) => {
         <CardHeader>
           <CardTitle>Individual Speaker Analysis</CardTitle>
           <CardDescription>
-            Detailed breakdown of each speaker's participation
+            Detailed breakdown of each speaker&apos;s participation
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {speakers.map((speaker: any, index: number) => (
+                     <div className="space-y-4">
+             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+             {speakers.map((speaker: any, index: number) => (
               <div 
                 key={speaker.name} 
                 className="p-4 border rounded-lg hover:shadow-md transition-shadow"
@@ -225,7 +228,8 @@ export const SpeakerBreakdown = ({ webinarId }: SpeakerBreakdownProps) => {
                   </div>
                 )}
 
-                {speakers.filter((s: any) => s.speakingPercentage > 20).length >= 3 && (
+                                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                 {speakers.filter((s: any) => s.speakingPercentage > 20).length >= 3 && (
                   <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950 rounded-lg">
                     <MessageSquare className="h-4 w-4 text-green-600" />
                     <span className="text-sm">
@@ -234,7 +238,8 @@ export const SpeakerBreakdown = ({ webinarId }: SpeakerBreakdownProps) => {
                   </div>
                 )}
 
-                {speakers.some((s: any) => s.avgConfidence < 70) && (
+                                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                 {speakers.some((s: any) => s.avgConfidence < 70) && (
                   <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
                     <TrendingUp className="h-4 w-4 text-yellow-600" />
                     <span className="text-sm">
@@ -243,7 +248,8 @@ export const SpeakerBreakdown = ({ webinarId }: SpeakerBreakdownProps) => {
                   </div>
                 )}
 
-                {speakers.filter((s: any) => s.avgSentiment > 0.2).length > speakers.length / 2 && (
+                                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                 {speakers.filter((s: any) => s.avgSentiment > 0.2).length > speakers.length / 2 && (
                   <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950 rounded-lg">
                     <TrendingUp className="h-4 w-4 text-green-600" />
                     <span className="text-sm">

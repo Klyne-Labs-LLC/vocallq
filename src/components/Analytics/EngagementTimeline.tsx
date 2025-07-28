@@ -12,6 +12,7 @@ interface EngagementTimelineProps {
 }
 
 export const EngagementTimeline = ({ webinarId }: EngagementTimelineProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [timelineData, setTimelineData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 

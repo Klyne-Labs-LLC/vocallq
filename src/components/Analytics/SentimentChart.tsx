@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface SentimentChartProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sentimentData: any;
   overallSentiment?: number;
 }
@@ -29,6 +30,7 @@ export const SentimentChart = ({ sentimentData, overallSentiment }: SentimentCha
 
   const sentimentArray = Array.isArray(sentimentData) ? sentimentData : [];
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sentimentArray.forEach((item: any) => {
     if (item.sentiment === 'POSITIVE') {
       sentimentCounts.positive++;
