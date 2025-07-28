@@ -10,11 +10,17 @@ interface LiveCaptionsProps {
   position: 'bottom' | 'top' | 'overlay';
 }
 
+interface RealtimeTranscriber {
+  on: (event: string, callback: (data: unknown) => void) => void;
+  connect: () => Promise<void>;
+  close: () => void;
+}
+
 export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps) => {
   const [captions, setCaptions] = useState<CaptionSegment[]>([]);
   const [currentCaption, setCurrentCaption] = useState<string>('');
   const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
-  const transcriberRef = useRef<any>(null);
+  const transcriberRef = useRef<RealtimeTranscriber | null>(null);
 
   useEffect(() => {
     if (!enabled) {
@@ -53,12 +59,18 @@ export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps
         });
 
         // Handle streaming events
-        transcriber.on('open', ({ id, expires_at }) => {
+        transcriber.on('open', ({ id }: { id: string }) => {
           console.log(`Live transcription session started: ${id}`);
           setConnectionStatus('connected');
         });
 
-        transcriber.on('turn', (turn) => {
+        transcriber.on('turn', (turn: {
+          turn_is_formatted: boolean;
+          turn_order: number;
+          transcript: string;
+          end_of_turn_confidence?: number;
+          end_of_turn: boolean;
+        }) => {
           if (turn.turn_is_formatted) {
             // Add completed caption
             setCaptions(prev => [...prev.slice(-4), {
@@ -78,7 +90,7 @@ export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps
           }
         });
 
-        transcriber.on('error', (error) => {
+        transcriber.on('error', (error: Error) => {
           console.error('Live transcription error:', error);
           setConnectionStatus('disconnected');
         });
@@ -108,7 +120,13 @@ export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps
   }, [enabled, webinarId]);
 
   // Save live transcription to database
-  const saveLiveTranscription = async (webinarId: string, turn: any) => {
+  const saveLiveTranscription = async (webinarId: string, turn: {
+    turn_order: number;
+    transcript: string;
+    turn_is_formatted: boolean;
+    end_of_turn: boolean;
+    end_of_turn_confidence?: number;
+  }) => {
     try {
       await fetch('/api/live-transcription', {
         method: 'POST',
