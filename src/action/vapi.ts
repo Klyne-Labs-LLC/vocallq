@@ -22,7 +22,6 @@ export const createAssistant = async (name: string, userId: string) => {
       },
       transcriber: {
         provider: "assembly-ai",
-        endpointing: 255,
       },
       startSpeakingPlan: {
         waitSeconds: 0.4,
@@ -85,7 +84,6 @@ export const updateAssistant = async (
       },
       transcriber: {
         provider: "assembly-ai",
-        endpointing: 255,
       },
       startSpeakingPlan: {
         waitSeconds: 0.4,
