@@ -96,11 +96,22 @@ model Webinar {
   priceId         String?           @db.VarChar(255)
   recordingUrl    String?
   thumbnail       String?
+  
+  // New AssemblyAI related fields
+  liveTranscriptionEnabled Boolean             @default(false)
+  autoTranscriptEnabled    Boolean             @default(true)
+  transcriptLanguage       String              @default("en")
+  
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   deletedAt       DateTime?
   Attendee        Attendee?         @relation(fields: [attendeeId], references: [id])
   attendeeId      String?           @db.Uuid
+  
+  // New relations
+  transcripts              WebinarTranscript[] @relation("WebinarTranscripts")
+  liveTranscriptions       LiveTranscription[] @relation("LiveTranscriptions")
+  insights                 WebinarInsights?    @relation("WebinarInsights")
 
   @@index([presenterId])
   @@index([aiAgentId])
