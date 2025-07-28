@@ -19,7 +19,7 @@ export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps
   const [captions, setCaptions] = useState<CaptionSegment[]>([]);
   const [currentCaption, setCurrentCaption] = useState<string>('');
   const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
-  const transcriberRef = useRef<RealtimeTranscriber | null>(null);
+  const transcriberRef = useRef<any>(null);
 
   useEffect(() => {
     if (!enabled) {
