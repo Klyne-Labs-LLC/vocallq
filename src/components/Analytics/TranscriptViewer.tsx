@@ -7,11 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Clock, User } from 'lucide-react';
 
 interface TranscriptViewerProps {
-  webinarId: string; // eslint-disable-line @typescript-eslint/no-unused-vars
+  webinarId: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transcript: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const TranscriptViewer = ({ webinarId, transcript }: TranscriptViewerProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -75,6 +76,7 @@ export const TranscriptViewer = ({ webinarId, transcript }: TranscriptViewerProp
             </CardContent>
           </Card>
         ) : (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           filteredSegments.map((segment: any, index: number) => (
             <Card key={segment.id || index}>
               <CardContent className="pt-4">
