@@ -53,9 +53,7 @@ export const LiveCaptions = ({ webinarId, enabled, position }: LiveCaptionsProps
         
         const transcriber = client.realtime.transcriber({
           sampleRate: 16000,
-          formatTurns: true,
-          // CORRECTED: Webinar-optimized settings
-          minEndOfTurnSilenceWhenConfident: 560, // For multi-speaker scenarios
+          // Basic configuration - only use documented parameters
         });
 
         // Handle streaming events
