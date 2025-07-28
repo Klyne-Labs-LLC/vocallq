@@ -152,3 +152,85 @@ model AiAgents {
 
   @@index([userId])
 }
+
+model WebinarTranscript {
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webinarId       String              @db.Uuid
+  webinar         Webinar             @relation("WebinarTranscripts", fields: [webinarId], references: [id], onDelete: Cascade)
+  
+  // AssemblyAI specific fields
+  assemblyAiId    String?             @unique @db.VarChar(255) // Store AssemblyAI transcript ID
+  transcriptText  String?             @db.Text
+  status          TranscriptStatusEnum @default(PENDING)
+  
+  // Correct field types based on AssemblyAI response structure
+  confidence      Float?              @db.DoublePrecision // Changed from generic Float
+  audioDuration   Int?                // Duration in seconds (AssemblyAI provides this)
+  processingTime  Int?                // Processing time in seconds
+  
+  // Updated based on actual AssemblyAI response structure
+  autoHighlights  Json?               // Store auto_highlights_result
+  sentimentResults Json?              // Store sentiment_analysis_results
+  
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  segments        TranscriptSegment[]
+
+  @@index([webinarId])
+  @@index([status])
+  @@index([assemblyAiId]) // New index for AssemblyAI ID
+}
+
+model TranscriptSegment {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transcriptId     String            @db.Uuid
+  transcript       WebinarTranscript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+  text             String            @db.Text
+  startTime        Float             // Timestamp in seconds (changed to Float for precision)
+  endTime          Float             // Timestamp in seconds
+  confidence       Float             @db.DoublePrecision // 0 to 1 scale
+  speaker          String?           @db.VarChar(100)
+  sentiment        Float?            @db.DoublePrecision // -1 to 1 scale for this segment
+  engagementLevel  EngagementLevelEnum?
+  createdAt        DateTime          @default(now())
+
+  @@index([transcriptId])
+  @@index([startTime])
+}
+
+model LiveTranscription {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webinarId        String    @db.Uuid
+  webinar          Webinar   @relation("LiveTranscriptions", fields: [webinarId], references: [id], onDelete: Cascade)
+  
+  // Universal-Streaming specific fields
+  turnOrder        Int       // turn_order from Universal-Streaming
+  turnId           String?   @db.VarChar(255) // Unique turn identifier
+  text             String    @db.Text
+  isFormatted      Boolean   @default(false) // turn_is_formatted
+  endOfTurn        Boolean   @default(false) // end_of_turn
+  endOfTurnConfidence Float? @db.DoublePrecision // end_of_turn_confidence
+  
+  timestamp        Float     // Timestamp in seconds from webinar start
+  confidence       Float?    @db.DoublePrecision
+  speaker          String?   @db.VarChar(100)
+  createdAt        DateTime  @default(now())
+
+  @@index([webinarId, turnOrder])
+  @@index([webinarId, timestamp])
+}
+
+model WebinarInsights {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webinarId             String   @unique @db.Uuid
+  webinar               Webinar  @relation("WebinarInsights", fields: [webinarId], references: [id], onDelete: Cascade)
+  overallSentiment      Float?   @db.DoublePrecision // -1 to 1 scale
+  engagementScore       Float?   @db.DoublePrecision // 0 to 1 scale
+  keyMoments            Json[]   // Array of {timestamp, description, type}
+  questionCount         Int      @default(0)
+  averageConfidence     Float?   @db.DoublePrecision // 0 to 1 scale
+  topKeywords           String[] // Most mentioned keywords
+  audienceParticipation Float?   @db.DoublePrecision // Percentage of time audience was speaking
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
