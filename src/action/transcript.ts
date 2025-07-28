@@ -111,8 +111,10 @@ const updateTranscriptWithResults = async (transcriptId: string, result: Record<
       status: TranscriptStatusEnum.COMPLETED,
       confidence: result.confidence as number,
       audioDuration: Math.round(result.audio_duration as number), // CORRECTED field name
-      autoHighlights: (result.auto_highlights_result as Record<string, unknown>[]) || [], // CORRECTED field name
-      sentimentResults: (result.sentiment_analysis_results as Record<string, unknown>[]) || [], // CORRECTED field name
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      autoHighlights: (result.auto_highlights_result as any) || null, // CORRECTED field name
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      sentimentResults: (result.sentiment_analysis_results as any) || null, // CORRECTED field name
       segments: {
         create: segments,
       },
