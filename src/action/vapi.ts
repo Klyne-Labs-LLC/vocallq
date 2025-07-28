@@ -22,17 +22,18 @@ export const createAssistant = async (name: string, userId: string) => {
       },
       transcriber: {
         provider: "assembly-ai",
-        language: "en",
-        confidenceThreshold: 0.4,
+        language: "en", 
+        confidenceThreshold: 0.7, // Higher for webinar accuracy
       },
+      // Optimize speaking plans for webinar format
       startSpeakingPlan: {
-        waitSeconds: 0.4,
-        smartEndpointingEnabled: false,
+        waitSeconds: 0.8, // Longer wait for thoughtful responses
+        smartEndpointingEnabled: true, // Enable for better turn detection
       },
       stopSpeakingPlan: {
-        numWords: 0,
-        voiceSeconds: 0.2,
-        backoffSeconds: 0.8,
+        numWords: 2, // Allow brief acknowledgments
+        voiceSeconds: 0.3, // More responsive for interruptions
+        backoffSeconds: 1.2, // Professional pause before resuming
       },
       serverMessages: [],
     });
@@ -86,17 +87,18 @@ export const updateAssistant = async (
       },
       transcriber: {
         provider: "assembly-ai",
-        language: "en",
-        confidenceThreshold: 0.4,
+        language: "en", 
+        confidenceThreshold: 0.7, // Higher for webinar accuracy
       },
+      // Optimize speaking plans for webinar format
       startSpeakingPlan: {
-        waitSeconds: 0.4,
-        smartEndpointingEnabled: false,
+        waitSeconds: 0.8, // Longer wait for thoughtful responses
+        smartEndpointingEnabled: true, // Enable for better turn detection
       },
       stopSpeakingPlan: {
-        numWords: 0,
-        voiceSeconds: 0.2,
-        backoffSeconds: 0.8,
+        numWords: 2, // Allow brief acknowledgments
+        voiceSeconds: 0.3, // More responsive for interruptions
+        backoffSeconds: 1.2, // Professional pause before resuming
       },
       serverMessages: [],
     });
