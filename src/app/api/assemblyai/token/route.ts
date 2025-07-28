@@ -6,7 +6,7 @@ import { onAuthenticateUser } from '@/action/auth';
  * Generate temporary AssemblyAI token for client-side streaming
  * Requires user authentication to prevent unauthorized access
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Authenticate user first
     const user = await onAuthenticateUser();
