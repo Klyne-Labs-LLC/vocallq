@@ -216,7 +216,8 @@ const generateWebinarInsights = async (webinarId: string, transcript: Record<str
     create: {
       webinarId,
       ...insights,
-      keyMoments: extractKeyMoments(transcript),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      keyMoments: extractKeyMoments(transcript) as any,
       audienceParticipation: calculateAudienceParticipation(transcript),
     },
     update: insights,
